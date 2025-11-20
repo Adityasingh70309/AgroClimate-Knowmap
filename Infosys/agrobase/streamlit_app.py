@@ -214,13 +214,52 @@ with st.sidebar:
                     st.error(msg)
 
 if st.session_state.page == "Home":
-    # (Hero HTML snippet removed by request)
+    # Set homepage background image using base64-encoded CSS
+    import base64
+    # Show homepage hero image directly below the navbar with 16:9 aspect ratio
+    img_path = os.path.join(os.path.dirname(__file__), "static", "homepage_bg.png")
+    if os.path.exists(img_path):
+        with open(img_path, "rb") as img_file:
+         with open(img_path, "rb") as img_file:
+            img_bytes = img_file.read()
+            img_b64 = base64.b64encode(img_bytes).decode()
+        st.markdown(
+            f"""
+            <style>
+            body, .stApp {{
+                background: url('data:image/png;base64,{img_b64}') no-repeat center center fixed !important;
+                background-size: cover !important;
+                background-color: #e7f6e7 !important;
+            }}
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+        try:
+            with open(img_path, "rb") as f:
+                img_b64 = base64.b64encode(f.read()).decode()
 
+            # Render a responsive 16:9 hero block using CSS padding trick
+            # Try to include an additional static JPG as a secondary background
+            img2_b64 = ""
+            second_img_path = os.path.join(os.path.dirname(__file__), "static", "image (1).jpg")
+            if os.path.exists(second_img_path):
+                try:
+                    with open(second_img_path, "rb") as f2:
+                        img2_b64 = base64.b64encode(f2.read()).decode()
+                except Exception:
+                    img2_b64 = ""
+
+            
+        except Exception as e:
+            st.warning(f"Unable to load homepage image: {e}")
+    # After the hero, show other images found in the `static` folder (excluding the hero file)
+    
     # --- Features Section ---
     st.markdown(
         """
         <div class="features">
-            <h2>Why Choose KNOWMAP?</h2>
+            <h2 style="color: white;font-weight:bold;">Why Choose KNOWMAP?</h2>
             <div class="feature-grid">
                 <div class="feature-card">
                     <img src="https://cdn-icons-png.flaticon.com/512/4149/4149729.png" width="60">
