@@ -1,0 +1,27 @@
+inputs:
+  soil: "agrobase/module_carbon_sequestration/sample_data/soil_carbon.csv"
+  crops: "agrobase/module_carbon_sequestration/sample_data/crops.csv"
+  biomass: "agrobase/module_carbon_sequestration/sample_data/biomass.csv"
+  management: "agrobase/module_carbon_sequestration/sample_data/management.csv"
+  climate: "agrobase/module_carbon_sequestration/sample_data/climate.csv"
+  rules: "agrobase/module_carbon_sequestration/sample_data/rules.json"
+output:
+  results_csv: "agrobase/module_carbon_sequestration/output/results.csv"
+  log_jsonl: "agrobase/module_carbon_sequestration/output/run_log.jsonl"
+neo4j:
+  enabled: true
+  uri: "bolt://localhost:8687"
+  user: "neo4j"
+  password: "password"
+engine:
+  ml_enabled: true
+  ml_model: "linear"
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
+  semantic_threshold: 0.55
+  scenario_practices: ["cover_cropping", "agroforestry", "residue_retention", "reduced_tillage"]
+  carbon_unit_factor: 3.67
+ml:
+  features: ["soc", "rainfall", "temperature", "biomass", "practice_factor"]
+  target: "sequestration_rate"
+pipeline:
+  steps: ["ingest", "rule_model", "ml_optional", "semantic", "scenarios", "save", "neo4j_optional"]

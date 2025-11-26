@@ -1,0 +1,22 @@
+inputs:
+  climate: "agrobase/module_climate_smart_farming/sample_data/climate.csv"
+  soil: "agrobase/module_climate_smart_farming/sample_data/soil.csv"
+  crops: "agrobase/module_climate_smart_farming/sample_data/crops.csv"
+  strategies: "agrobase/module_climate_smart_farming/sample_data/strategies_catalog.csv"
+output:
+  strategies_csv: "agrobase/module_climate_smart_farming/output/strategies.csv"
+  log_jsonl: "agrobase/module_climate_smart_farming/output/run_log.jsonl"
+neo4j:
+  enabled: true
+  uri: "bolt://localhost:8687"
+  user: "neo4j"
+  password: "password"
+risk:
+  weights:
+    drought: 0.3
+    flood: 0.25
+    heat: 0.25
+    pest: 0.2
+strategy:
+  top_n: 3
+  embedding_model: "sentence-transformers/all-MiniLM-L6-v2"
